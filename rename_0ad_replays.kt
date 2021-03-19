@@ -10,7 +10,7 @@ import java.util.stream.Stream
 fun main() {
 
     var isDemoMode = true
-    isDemoMode = false
+//    isDemoMode = false
     if(isDemoMode)
         println("isDemoMode\n")
 
@@ -81,6 +81,10 @@ if(false) {
             Civ = matched?.get(2)
             Name1 = matched?.get(3)
             Civ1 = matched?.get(4)
+
+            Civ = civ_short2civ_long(Civ)
+            Civ1 = civ_short2civ_long(Civ1)
+
             val newFileName = "$Name $Civ $Name1 $Civ1"
 
             return@lit // local return to the caller of the lambda, i.e. the forEach loop
@@ -101,6 +105,16 @@ if(false) {
             }
         }
     }
+}
+
+fun civ_short2civ_long(w_text:String): String {
+    return w_text.replace("kush", "Kushites")
+        .replace("maur", "Mauryans")
+        .replace("brit", "Britons")
+        .replace("ptol", "Ptolemies")
+        .replace("sele", "Seleucid")
+        .replace("rome", "Romans")
+        .replace("cart", "Carthaginians")
 };
 fun moveDirectory(
     sourceFile: String,
@@ -132,7 +146,7 @@ fun readFileLineByLineUsingForEachLine2(fileName: String): String {
 //    }
 
     val useLines = File(fileName).useLines { lines ->
-        val (name, civ, name1, civ1, gameSpeed, mapType, map) = lines
+        var (name, civ, name1, civ1, gameSpeed, mapType, map) = lines
             .map {
                 val regexString = """
 "Name":"(?<Name>[^"]+)".*?
@@ -157,7 +171,16 @@ fun readFileLineByLineUsingForEachLine2(fileName: String): String {
             .filterNotNull()
             .first()
             .destructured
-        name + "(" + civ + ") VS " + name1 + "(" + civ1 + "), " + gameSpeed + " speed, " + mapType + " Map " + map.replace("/","∕")
+
+        civ = civ_short2civ_long(civ)
+        civ1 = civ_short2civ_long(civ1)
+
+        name + "(" + civ + ") VS " + name1 + "(" + civ1 + "), " + gameSpeed + "xSpeed, " + mapType + " Map " + map.replace("/","∕")
+
+//        Civ = civ_short2civ_long(Civ)
+//        Civ1 = civ_short2civ_long(Civ1)
+
+
 
 // https://www.compart.com/en/unicode/U+2215 Unicode Character “∕” (U+2215)
 
