@@ -6,11 +6,15 @@ import java.nio.file.Files
 
 import java.util.stream.Stream
 
+// promoted here: https://wildfiregames.com/forum/topic/37375-this-rename_0ad_replayskt-kotin-script-renames-the-replay-folder-names/?tab=comments#comment-420685
+
+
+
 // TODO: somewhere in future: for json better us this: https://github.com/zogar1993/jsonkraken
 fun main() {
 
     var isDemoMode = true
-//    isDemoMode = false
+    isDemoMode = false
     if(isDemoMode)
         println("isDemoMode\n")
 
@@ -18,7 +22,7 @@ fun main() {
     property.toString()
 
     var d0 = "$property/snap/0ad/199/.local/share/0ad/replays/0.0.24";
-        d0 = "$property/snap/0ad/201/.local/share/0ad/replays/0.0.24/";
+        d0 = "$property/snap/0ad/201/.local/share/0ad/replays/0.0.24";
 
     /*
             /home/x/snap/0ad/201/.local/share/0ad/replays/0.0.24/
@@ -49,7 +53,7 @@ fun main() {
                 println()
                 val dFrom = "$d0/$d_fresh"
                 println(dFrom)
-                val d2 = "$d0/$smallPrefix 0AD1v1 $newFileName";
+                val d2 = "$d0/$smallPrefix $newFileName";
                 println("$d2")
 
 
@@ -145,6 +149,8 @@ fun readFileLineByLineUsingForEachLine2(fileName: String): String {
 //        }
 //    }
 
+//    "Team":1,
+
     val useLines = File(fileName).useLines { lines ->
         var (name, civ, name1, civ1, gameSpeed, mapType, map) = lines
             .map {
@@ -157,12 +163,9 @@ fun readFileLineByLineUsingForEachLine2(fileName: String): String {
 "mapType":"(?<mapType>[^"]+)",
 "map":"(?<map>[^"]+)"
         """.trim()
-            val regexStringOLD = """
-"Name":"(?<Name>[^"]+)".*?
-"Civ":"(?<Civ>\w+)".*?
-"Name":"(?<Name1>[^"]+)".*?
-"Civ":"(?<Civ1>\w+)".*?
-            """.trim()
+
+//                 0AD Viriato (1265)(athen) VS vssff (1135)(Kushites), 1xSpeed, random Map maps∕random∕ngorongoro
+                // 2021-03-21_0056 0AD Viriato (1265)(athen) VS vssff (1135)(Kushites), 1xSpeed, random Map maps∕random∕ngorongoro
 
                 var regex = Regex(regexString.replace("\n",""), RegexOption.IGNORE_CASE)
 //                var matched = regex.find(it)?.groupValues
@@ -175,7 +178,26 @@ fun readFileLineByLineUsingForEachLine2(fileName: String): String {
         civ = civ_short2civ_long(civ)
         civ1 = civ_short2civ_long(civ1)
 
-        name + "(" + civ + ") VS " + name1 + "(" + civ1 + "), " + gameSpeed + "xSpeed, " + mapType + " Map " + map.replace("/","∕")
+        val lines = File(fileName).readLines()
+        val line0 = lines[0].trim()
+        val nrOfPlayers = line0.splitToSequence("{\"Name\"").count() - 1
+        var gameType = ""
+        if(nrOfPlayers>0) {
+//            println("nrOfPlayers = $nrOfPlayers")
+            if(nrOfPlayers==2)
+                gameType = "1v1"
+            else if(nrOfPlayers==4)
+                gameType = "2v2"
+            else if(nrOfPlayers==6)
+                gameType = "3v3"
+            else if(nrOfPlayers==8)
+                gameType = "4v4"
+        }
+
+
+
+//        nrOfPlayers + "pl_" + name + "(" + civ + ") VS " + name1 + "(" + civ1 + "), " + gameSpeed + "xSpeed, " + mapType + " Map " + map.replace("/","∕")
+        "0AD" + gameType + " " + name + "(" + civ + ") VS " + name1 + "(" + civ1 + "), " + gameSpeed + "xSpeed, " + mapType + " Map " + map.replace("/","∕")
 
 //        Civ = civ_short2civ_long(Civ)
 //        Civ1 = civ_short2civ_long(Civ1)
