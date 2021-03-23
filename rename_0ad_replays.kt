@@ -111,15 +111,15 @@ if(false) {
     }
 }
 
-fun civ_short2civ_long(w_text:String): String {
-    return w_text.replace("kush", "Kushites")
-        .replace("maur", "Mauryans")
-        .replace("brit", "Britons")
-        .replace("ptol", "Ptolemies")
-        .replace("sele", "Seleucid")
-        .replace("rome", "Romans")
-        .replace("cart", "Carthaginians")
-};
+fun civ_short2civ_long(w_text: String): String {
+        return w_text.replace("kush", "Kushites")
+            .replace("maur", "Mauryans")
+            .replace("brit", "Britons")
+            .replace("ptol", "Ptolemies")
+            .replace("sele", "Seleucid")
+            .replace("rome", "Romans")
+            .replace("cart", "Carthaginians")
+    }
 fun moveDirectory(
     sourceFile: String,
     targetFile: String,
@@ -151,65 +151,66 @@ fun readFileLineByLineUsingForEachLine2(fileName: String): String {
 
 //    "Team":1,
 
-    val useLines = File(fileName).useLines { lines ->
-        var (name, civ, name1, civ1, gameSpeed, mapType, map) = lines
-            .map {
-                val regexString = """
+    val lines = File(fileName).readLines()
+    val line0 = lines[0].trim()
+    val nrOfPlayers = line0.splitToSequence("{\"Name\"").count() - 1
+
+        var regexString0oldStyle = ""
+        regexString0oldStyle = """
 "Name":"(?<Name>[^"]+)".*?
 "Civ":"(?<Civ>\w+)".*?
 "Name":"(?<Name1>[^"]+)".*?
 "Civ":"(?<Civ1>\w+)".*?
 "gameSpeed":(?<gameSpeed>[^,]+),
-"mapType":"(?<mapType>[^"]+)",
+        """.trim()
+
+        val regexString1 = regexString0oldStyle.replace("\n", "")
+        var regex = Regex(regexString1, RegexOption.IGNORE_CASE)
+        var matchResult0 = regex.find(line0)?.groupValues
+    var regexMapTypeMap  = ""
+    regexMapTypeMap  = """
+"mapType":"(?<mapType>[^"]+)".*?
 "map":"(?<map>[^"]+)"
         """.trim()
 
-//                 0AD Viriato (1265)(athen) VS vssff (1135)(Kushites), 1xSpeed, random Map maps∕random∕ngorongoro
-                // 2021-03-21_0056 0AD Viriato (1265)(athen) VS vssff (1135)(Kushites), 1xSpeed, random Map maps∕random∕ngorongoro
 
-                var regex = Regex(regexString.replace("\n",""), RegexOption.IGNORE_CASE)
-//                var matched = regex.find(it)?.groupValues
-                regex.find(it)
-            }
-            .filterNotNull()
-            .first()
-            .destructured
+    regexMapTypeMap = regexMapTypeMap.replace("\n", "")
+    var regex2 = Regex(regexMapTypeMap, RegexOption.IGNORE_CASE)
+    var matchResultMapTypeMap = regex2.find(line0)?.groupValues
+//    val matchResult1 = regex.find(line0)
 
-        civ = civ_short2civ_long(civ)
-        civ1 = civ_short2civ_long(civ1)
+    var name0 = matchResult0?.get(1).toString()
+    var civ0 = matchResult0?.get(2).toString()
 
-        val lines = File(fileName).readLines()
-        val line0 = lines[0].trim()
-        val nrOfPlayers = line0.splitToSequence("{\"Name\"").count() - 1
-        var gameType = ""
-        if(nrOfPlayers>0) {
+    var name1 = matchResult0?.get(3).toString()
+    var civ1 = matchResult0?.get(4).toString()
+
+    var gameSpeed = matchResult0?.get(5).toString()
+
+
+    val civ0Short2civLong = civ_short2civ_long(civ0)
+    val civ1Short2civLong1 = civ_short2civ_long(civ1)
+
+    var mapType = matchResultMapTypeMap?.get(1).toString()
+    var mapHuhu = matchResultMapTypeMap?.get(2).toString()
+    var gameType = ""
+    if(nrOfPlayers>0) {
 //            println("nrOfPlayers = $nrOfPlayers")
-            if(nrOfPlayers==2)
-                gameType = "1v1"
-            else if(nrOfPlayers==4)
-                gameType = "2v2"
-            else if(nrOfPlayers==6)
-                gameType = "3v3"
-            else if(nrOfPlayers==8)
-                gameType = "4v4"
-        }
-
-
-
-//        nrOfPlayers + "pl_" + name + "(" + civ + ") VS " + name1 + "(" + civ1 + "), " + gameSpeed + "xSpeed, " + mapType + " Map " + map.replace("/","∕")
-        "0AD" + gameType + " " + name + "(" + civ + ") VS " + name1 + "(" + civ1 + "), " + gameSpeed + "xSpeed, " + mapType + " Map " + map.replace("/","∕")
-
-//        Civ = civ_short2civ_long(Civ)
-//        Civ1 = civ_short2civ_long(Civ1)
-
-
-
-// https://www.compart.com/en/unicode/U+2215 Unicode Character “∕” (U+2215)
-
-//            .First() will throw an exception if there's no row to be returned, while .FirstOrDefault()
+        if(nrOfPlayers==2)
+         gameType = "1v1"
+        else if(nrOfPlayers==4)
+            gameType = "2v2"
+        else if(nrOfPlayers==6)
+            gameType = "3v3"
+        else if(nrOfPlayers==8)
+            gameType = "4v4"
     }
-    println(useLines)
-    return useLines
+    var back =
+        "0AD" + gameType + " " + name0 + "(" + civ0 + ") VS " + name1 + "(" + civ1 + "), " + gameSpeed + "xSpeed, " + mapType + " Map " + mapHuhu.replace(
+            "/",
+            "∕")
+    return  "$back"
+//    return  "$gameType $name0 $civ0  $name1 $civ1 "
 }
 
 fun walkDirectory(dirPath: String, pattern: Regex): List<String> {
