@@ -20,9 +20,9 @@
  * attributes source1, result1 are not optional.
 */
 
-$bugIt=true;
+$bugIt = true;
 #$bugIt=false;
-if($bugIt)echo __LINE__.':  :-) ' . "\n";
+if ($bugIt) echo __LINE__ . ':  :-) ' . "\n";
 
 $path0 = '/home/x/snap/0ad/206/.local/share/0ad/replays/0.0.24/2021-03-15_0001 Alistair (1432 kush) vs seeh (926 maur) in maps skirmishes alpine_valleys_2p/';
 $path0 = '/home/x/snap/0ad/206/.local/share/0ad/replays/0.0.24/';
@@ -33,7 +33,8 @@ $path0 = '/home/x/snap/0ad/206/.local/share/0ad/replays/0.0.24/';
 //$bugIt=false;
 
 $doRenameAll = true;
-if($doRenameAll) { # rescan rename all but not folders with leading YT
+//$doRenameAll = false;
+if ($doRenameAll) { # rescan rename all but not folders with leading YT
     $files = scandir($path0);
     foreach ($files as $folderName) {
         $substrYT = strtolower(substr($folderName, 0, 2));
@@ -48,10 +49,10 @@ if($doRenameAll) { # rescan rename all but not folders with leading YT
     die(__LINE__ . ': die');
 }
 
-    $files = scandir($path0);
+$files = scandir($path0);
 foreach ($files as $folderName) {
-    if (is_dir($path0."/". $folderName) === TRUE)
-        if(preg_match("/^\d{4}-\d{2}-\d{2}_\d{4}$/",$folderName))
+    if (is_dir($path0 . "/" . $folderName) === TRUE)
+        if (preg_match("/^\d{4}-\d{2}-\d{2}_\d{4}$/", $folderName))
             workThisFolder($path0, $folderName, $bugIt);
 //            echo "\n $$filename ... found :) "; # 2021-05-09_0007
 
@@ -76,9 +77,9 @@ function workThisFolder($path0, string $folderName, $bugIt): void
     $path = $path0 . "/" . $folderName;
     $fileAddress = $path . '/commands.txt';
 
-    if(!$path0)
+    if (!$path0)
         die(__LINE__ . "':  \$path0) = " . $path0 . "\n");
-    if(!$fileAddress)
+    if (!$fileAddress)
         die(__LINE__ . "':  \$fileAddress) = " . $fileAddress . "\n");
 //    echo "\n\n". __LINE__ . "':  \$fileAddress) = \n" . $fileAddress . "\n";
 
@@ -86,8 +87,7 @@ function workThisFolder($path0, string $folderName, $bugIt): void
 
     $file_content = file_get_contents($fileAddress);
 //    if ($bugIt) echo __LINE__ . ':  :-) ' . substr($file_content, 0, 700) . "...\n";;
-    if(strlen($file_content)<9)
-    {
+    if (strlen($file_content) < 9) {
         echo __LINE__ . ":  strlen($file_content)<9 ";
         return;
     }
@@ -95,7 +95,7 @@ function workThisFolder($path0, string $folderName, $bugIt): void
 
 //    var_dump($actual_contentArray);
 
-    if(false && strlen($actual_contentArray['infoContent']) > 20) {
+    if (false && strlen($actual_contentArray['infoContent']) > 20) {
         echo "\n\n infoContent= \n\n";
         echo $actual_contentArray['infoContent'];
         echo "\n"; # $sortedStringBestRatingFirst['infoContent']
@@ -113,17 +113,15 @@ function workThisFolder($path0, string $folderName, $bugIt): void
 //    die(__LINE__ . ": rename($path, $newFileName);" );
     $folderPathNew = $path0 . '/' . $newFileName; # . ' ' . $folderName;
 
+    rename($path, $folderPathNew);
 
-//    rename($path, $folderPathNew);
-
-
-    if(!is_dir($folderPathNew)){
-        die(__LINE__. "\n\n\n not renamed: \n$path\n\n not exist: \n\n" . $folderPathNew . "\n");
+    if (!is_dir($folderPathNew)) {
+        die(__LINE__ . "\n\n\n not renamed: \n$path\n\n not exist: \n\n" . $folderPathNew . "\n");
     }
 
 //    die("\ndie at " . __LINE__);
 //    if($bugIt)echo "\n" . __LINE__ . "  :-) result written to fileAddress='\n" . $infoTXTpath . "'\n";
-    if($bugIt && strlen($folderName)>100) {
+    if ($bugIt && strlen($folderName) > 100) {
         echo "\n\n" . __LINE__ . "  :-) renamed to='\n\n.../" . $newFileName . "'\n\n";
     }
 }
@@ -132,14 +130,15 @@ function workThisFolder($path0, string $folderName, $bugIt): void
 
 die(__LINE__ . " DODO save it");
 
-if(strlen($file_content) == strlen($actual_contentArray))
-    if($bugIt)echo __LINE__.":  result length not changed. maybe nothing changed.\n";
+if (strlen($file_content) == strlen($actual_contentArray))
+    if ($bugIt) echo __LINE__ . ":  result length not changed. maybe nothing changed.\n";
 
 #######################################
 ######### end of program , start of functions
 ########################################
 
-function recursion_example4($source, $arguments) { # ($file_content, $arguments);
+function recursion_example4($source, $arguments)
+{ # ($file_content, $arguments);
     if (true) {
 
         $cf = new SL5_preg_contentFinder($source);
@@ -151,7 +150,7 @@ function recursion_example4($source, $arguments) { # ($file_content, $arguments)
             # do this many times should be no problem
             $rebuild = '';
             for ($pos = 0; $pos < count($sourceArray); $pos += 3) {
-                $p = $cf->getBorders( $b = '{', $e = '}', $pos);
+                $p = $cf->getBorders($b = '{', $e = '}', $pos);
                 if (is_null($p['begin_begin'])) {
                     die(__FUNCTION__ . __LINE__);
                 }
@@ -182,7 +181,7 @@ function recursion_example4($source, $arguments) { # ($file_content, $arguments)
                 if ($pos == 3) {
                     132465789;
                 }
-                $p = $cf->getBorders( '(', ')', $pos);
+                $p = $cf->getBorders('(', ')', $pos);
                 if (is_null($p['begin_begin'])) {
                     die(__FUNCTION__ . __LINE__);
                 }
@@ -202,14 +201,14 @@ function recursion_example4($source, $arguments) { # ($file_content, $arguments)
                         echo ')';
                     }
                 }
-                $cf->getBorders( '(', ')', $pos);
+                $cf->getBorders('(', ')', $pos);
                 if (!$silentMode) {
                     echo '(' . @$cf->getContent();
                 }
                 if (!$silentMode) {
                     echo ')(';
                 }
-                $cf->getBorders( '(', ')', $pos);
+                $cf->getBorders('(', ')', $pos);
                 if (!$silentMode) {
                     echo '' . $cf->getContent_Next();
                 }
@@ -224,7 +223,7 @@ function recursion_example4($source, $arguments) { # ($file_content, $arguments)
 
     if (1) {
         ######## borders beetween #########
-        $cf->getBorders( '(1)', '(7)', 0);
+        $cf->getBorders('(1)', '(7)', 0);
         $c = @$cf->getContent();
         if (!$silentMode) {
             echo __LINE__ . ': ' . $c . '<br>';
@@ -248,12 +247,13 @@ function recursion_example4($source, $arguments) { # ($file_content, $arguments)
 }
 
 
-function getContentOfFile_commandsTXT2shortInfoTXT($file_content, $arguments = null) {
-    if(!isset($file_content)) die('15-06-25_15-07 $f_input');
-    $bugIt=true;
+function getContentOfFile_commandsTXT2shortInfoTXT($file_content, $arguments = null)
+{
+    if (!isset($file_content)) die('15-06-25_15-07 $f_input');
+    $bugIt = true;
 //    if($bugIt)echo __LINE__."':  strlen($file_content) = " . strlen($file_content) . "\n";
-    if(!strlen($file_content)){
-        echo __LINE__."':  strlen($file_content) = " . strlen($file_content) . "\n";
+    if (!strlen($file_content)) {
+        echo __LINE__ . "':  strlen($file_content) = " . strlen($file_content) . "\n";
         return false;
     }
 
@@ -264,15 +264,15 @@ function getContentOfFile_commandsTXT2shortInfoTXT($file_content, $arguments = n
         , 0);
 //    var_dump($matches);
 
-    $contentBehind = getContentBehind($matchesOFFSET, $file_content,900);
+    $contentBehind = getContentBehind($matchesOFFSET, $file_content, 900);
 //    if($bugIt)echo __LINE__.':  :-) ' . "\n";
 //    echo "\n\n\n \$contentBehind = " . $contentBehind . "\n\n\n";
 
     //    "gameSpeed":1,"mapType":"random","map":"maps/random/mainland"
 //    if($bugIt)echo __LINE__.':  :-) ' . "\n";
-    preg_match('/"gameSpeed":(\d+).*"map":"([^"]+)"/', $contentBehind,$matchesMAPandSPEED);
+    preg_match('/"gameSpeed":(\d+).*"map":"([^"]+)"/', $contentBehind, $matchesMAPandSPEED);
     $gameSpeed = @$matchesMAPandSPEED[1];
-    $map = substr( str_replace("/", "∕", @$matchesMAPandSPEED[2]),7 ); # pseudo backslash with no problems as filename# maps/
+    $map = substr(str_replace("/", "∕", @$matchesMAPandSPEED[2]), 7); # pseudo backslash with no problems as filename# maps/
 //    die(__LINE__ . ": $map");
 
 //    var_dump($matches2);
@@ -316,12 +316,12 @@ function getContentOfFile_commandsTXT2shortInfoTXT($file_content, $arguments = n
 //        if($rating)$rating .= ' ';
         $civ = $match[4];
 
-        if($match[5] == '-1') {
+        if ($match[5] == '-1') {
             $teamNr++;
             # if($bugIt)
 //            echo __LINE__.':  $teamNr= ' . $teamNr . "\n";
 
-        }else
+        } else
             $teamNr = $match[5];
 
         $thisArr = [
@@ -330,32 +330,34 @@ function getContentOfFile_commandsTXT2shortInfoTXT($file_content, $arguments = n
             "rating" => $rating
         ];
 
-        if($teamNrOld <> $teamNr) {
-//            $teamNrOld = $playerNr = 0;
+        if ($teamNrOld <> $teamNr) {
+            $teamNrOld = $playerNr = 0;
             $returnStr .= ' VS ';
             $returnStr2 .= ' VS ';
             $returnStr3 .= ' VS ';
             $returnStr4 .= ' VS ';
             $returnStr5 .= ' VS ';
         }
-        if(isset($teamNrArr[$teamNr][0]["rating"]) && $thisArr["rating"] > $teamNrArr[$teamNr][0]["rating"]){
+
+        # sort is here
+        if (isset($teamNrArr[$teamNr][0]["rating"]) && $thisArr["rating"] > $teamNrArr[$teamNr][0]["rating"]) {
             # highest rating player should top
             $t0old = $teamNrArr[$teamNr][0];
             $teamNrArr[$teamNr][0] = $thisArr;
             $teamNrArr[$teamNr][$playerNr] = $t0old;
 
-        }else
+        } else
             $teamNrArr[$teamNr][$playerNr] = $thisArr;
 
 
         $echo = "($name $rating$civ)";
-        if($teamNrOld == $teamNr) {
+        if ($teamNrOld == $teamNr) {
 //            $playerNr=0;
             $echo2 = '|';
             $echo3 = '#';
             $echo4 = ', ';
             $echo5 = ',';
-        }else{
+        } else {
             $echo2 = '';
             $echo3 = '';
             $echo4 = '';
@@ -363,7 +365,7 @@ function getContentOfFile_commandsTXT2shortInfoTXT($file_content, $arguments = n
         }
         $echo2 .= "$name $rating$civ";
         $echo3 .= "$name $rating$civ";
-        $echo4 .= "$name(". ltrim($rating . $civ) . ")";
+        $echo4 .= "$name(" . ltrim($rating . $civ) . ")";
         $echo5 .= "$name$rating$civ";
         $returnStr .= $echo;
         $returnStr2 .= $echo2;
@@ -377,8 +379,15 @@ function getContentOfFile_commandsTXT2shortInfoTXT($file_content, $arguments = n
 //        break;
     }
 
+    # not its sorted, but only into the teams.
+    if (@$teamNrArr[0][0]["rating"] < @$teamNrArr[1][0]["rating"]) {
+        $temp = $teamNrArr[0];
+        $teamNrArr[0] = $teamNrArr[1];
+        $teamNrArr[1] = $temp;
+    }
+
     foreach ($teamNrArr as $index => $team) {
-        if(@$teamNrArr[0][0]["rating"] < @$team[0]["rating"]) {
+        if (@$teamNrArr[0][0]["rating"] < @$team[0]["rating"]) {
             # change the teams
             $t0old = $teamNrArr[0];
             $teamNrArr[0] = $team;
@@ -386,25 +395,30 @@ function getContentOfFile_commandsTXT2shortInfoTXT($file_content, $arguments = n
         }
     }
 
+//    if ($bugIt && count($teamNrArr) > 1) die("\n" . __LINE__ . ':\n  :-) ' . var_dump($teamNrArr) . "\n");
 
-    $sortedStringBestRatingFirst = sortArray2string($teamNrArr);
+
+    $sortedStringBestRatingFirst = convert_sortArray2string($teamNrArr);
+
+//    if($bugIt)echo "\n" . __LINE__.':\n  :-) ' . var_dump($sortedStringBestRatingFirst) . "\n";
+
+
 //    echo "\n\n sortedStringBestRatingFirst = " . $sortedStringBestRatingFirst . "\n\n";
 
-        $infoContent = ltrim($returnStr)
-        . "\n" . ltrim($returnStr2,"| ")
-        . "\n" . ltrim($returnStr3,"# ")
-        . "\n" . ltrim($returnStr4,", ")
-        . "\n" . ltrim($returnStr5,", ")
+    $infoContent = ltrim($returnStr)
+        . "\n" . ltrim($returnStr2, "| ")
+        . "\n" . ltrim($returnStr3, "# ")
+        . "\n" . ltrim($returnStr4, ", ")
+        . "\n" . ltrim($returnStr5, ", ")
         . "\n" . $sortedStringBestRatingFirst
         . '';
 
-    return array('sortedString'=>$sortedStringBestRatingFirst,'gameSpeed'=>$gameSpeed,'map'=>$map,'unSortedArray'=>$teamNrArr, 'infoContent'=>$infoContent);
+    return array('sortedString' => $sortedStringBestRatingFirst, 'gameSpeed' => $gameSpeed, 'map' => $map, 'unSortedArray' => $teamNrArr, 'infoContent' => $infoContent);
 
 //    if($bugIt)echo __LINE__.':  :-) ' . var_export($teamNrArr) . "\n";
 
 //    var_dump($teamNrArr);
 #    echo implode(',',$teamNrArr);
-
 
 
 }
@@ -415,7 +429,8 @@ function getContentOfFile_commandsTXT2shortInfoTXT($file_content, $arguments = n
  * using array_key_last (PHP 7 >= 7.3.0, PHP 8)
  * @return string contentBehind
  */
-function getContentBehind($matches, $file_content, $maxLength=100){
+function getContentBehind($matches, $file_content, $maxLength = 100)
+{
 //    var_dump($matches);
     $last1ArrayValue = $matches[array_key_last($matches)];
     $last2ArrayValue = $last1ArrayValue[array_key_last($last1ArrayValue)];
@@ -432,13 +447,14 @@ function getContentBehind($matches, $file_content, $maxLength=100){
 /**
  * @param array $teamNrArr
  */
-function sortArray2string(array $teamNrArr){
+function convert_sortArray2string(array $teamNrArr)
+{
     $delimiter = ", ";
     $r = '';
     $teamNrOld = 0;
 
     $countOfTeam1 = @count($teamNrArr[1]);
-    if($countOfTeam1 >2) {
+    if ($countOfTeam1 > 2) {
         $delimiter = trim($delimiter); # . $countOfTeam1;
     }
 
@@ -452,25 +468,25 @@ function sortArray2string(array $teamNrArr){
             } else $r .= $delimiter;
             $r .= $player['rating'];
             $r .= $player['civ'];
-            $r .= ucfirst( $player['name']);
+            $r .= ucfirst($player['name']);
             $teamNrOld = $teamIDhere;
         }
     }
-    $r = ltrim($r, $delimiter. " ");
+    $r = ltrim($r, $delimiter . " ");
     return $r;
 }
 
 // --name1="value1" --name2="value2"
-function arguments($argv) {
+function arguments($argv)
+{
     $_ARG = array();
-    foreach($argv as $arg) {
-        if(preg_match_all('/--([^=]+)="?([^"]*)"?/', $arg, $reg)) {
-            foreach($reg[1] as $k => $v) {
+    foreach ($argv as $arg) {
+        if (preg_match_all('/--([^=]+)="?([^"]*)"?/', $arg, $reg)) {
+            foreach ($reg[1] as $k => $v) {
                 $var = $reg[2][$k];
                 $_ARG[$v] = $var;
             }
-        }
-        elseif(preg_match_all('/-([^=]+)="?([^"]*)"?/', $arg, $reg)) {
+        } elseif (preg_match_all('/-([^=]+)="?([^"]*)"?/', $arg, $reg)) {
             $_ARG[$reg[1]] = 'true';
         }
     }
