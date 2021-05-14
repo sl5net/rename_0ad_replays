@@ -8,6 +8,7 @@
  * Tipps:
  * https://github.com/paulmillr/chokidar
  *
+ *
  * clear ; php ~/php/SL5_preg_contentFinder-master/examples/0ad-replay/commands_txt2output_txt.php
  * writes info.txt
  * script reads --source1=./commands.txt
@@ -19,6 +20,7 @@
  *
  * attributes source1, result1 are not optional.
 */
+$tipLinuxCommandForPrintFoldersSorted = 'ls -d */ > ./ls-sort.txt';
 
 $bugIt = true;
 #$bugIt=false;
@@ -32,8 +34,8 @@ $path0 = '/home/x/snap/0ad/206/.local/share/0ad/replays/0.0.24/';
 
 //$bugIt=false;
 
-$doRenameAll = true;
-//$doRenameAll = false;
+//$doRenameAll = true;
+$doRenameAll = false; # rename only new folder (means new games without good name)
 if ($doRenameAll) { # rescan rename all but not folders with leading YT
     $files = scandir($path0);
     foreach ($files as $folderName) {
@@ -493,3 +495,4 @@ function arguments($argv)
     return $_ARG;
 }
 
+    
