@@ -5,6 +5,19 @@
  * example:
  * sudo apt -y install php7.4-cli
  *
+ * Tipps:
+ * https://github.com/paulmillr/chokidar
+ *
+ * clear ; php ~/php/SL5_preg_contentFinder-master/examples/0ad-replay/commands_txt2output_txt.php
+ * writes info.txt
+ * script reads --source1=./commands.txt
+ * script write --result1=./result.txt
+ *
+ * used in a command line. Example:
+ * $ clear ; php ./php/SL5_preg_contentFinder-master/examples/0ad-replay/commands_txt2output_txt.php --source1="commands.txt" --result1="test.txt"
+
+ *
+ * attributes source1, result1 are not optional.
 */
 
 $bugIt=true;
@@ -19,8 +32,8 @@ $path0 = '/home/xyz/snap/0ad/206/.local/share/0ad/replays/0.0.24/';
 
 //$bugIt=false;
 
-
-if(true) { # rescan rename all but not folders with leading YT
+$doRenameAll = true;
+if($doRenameAll) { # rescan rename all but not folders with leading YT
     $files = scandir($path0);
     foreach ($files as $folderName) {
         $substrYT = strtolower(substr($folderName, 0, 2));
@@ -111,6 +124,113 @@ if(strlen($file_content) == strlen($actual_contentArray))
 ######### end of program , start of functions
 ########################################
 
+function recursion_example4($source, $arguments) { # ($file_content, $arguments);
+    if (true) {
+
+        $cf = new SL5_preg_contentFinder($source);
+//        $cf->setBeginEnd_RegEx('{', '}');
+
+
+        for ($i = 0; $i < 2; $i++) {
+            # rebuild with search tool. find every number
+            # do this many times should be no problem
+            $rebuild = '';
+            for ($pos = 0; $pos < count($sourceArray); $pos += 3) {
+                $p = $cf->getBorders( $b = '{', $e = '}', $pos);
+                if (is_null($p['begin_begin'])) {
+                    die(__FUNCTION__ . __LINE__);
+                }
+
+                $rebuild_1 = '(' . $cf->getContent($b, $e, $pos) . ')';
+                $rebuild_2 = '(' . $cf->getContent() . ')';
+                if ($rebuild_1 != $rebuild_2) {
+                    die(__FUNCTION__ . __LINE__ . ": '$rebuild_1' != '$rebuild_2' (rebuild_1 != rebuild_2");
+                }
+                $rebuild .= $rebuild_1;
+            }
+            if (!$silentMode) {
+                echo __LINE__ . ':$rebuild= <br>' . $rebuild . '<br>';
+            }
+            if (!$silentMode) {
+                echo $numbers . '<br>';
+            }
+            if ($source != $rebuild) {
+                die(__LINE__ . ":ERROR <br>$source != <br>$rebuild");
+            }
+            if (!$silentMode) {
+                echo '<hr>';
+            }
+            if (!$silentMode) {
+                echo '--:' . $numbers . '<br>';
+            }
+            for ($pos = 0; $pos < count($sourceArray); $pos += 3) {
+                if ($pos == 3) {
+                    132465789;
+                }
+                $p = $cf->getBorders( '(', ')', $pos);
+                if (is_null($p['begin_begin'])) {
+                    die(__FUNCTION__ . __LINE__);
+                }
+                if (!$silentMode) {
+                    echo ($pos > 9) ? "$pos:" : "0$pos:";
+                }
+                if ($pos - 2 >= 0) {
+                    if (!$silentMode) {
+                        echo str_repeat('_', $pos - 2);
+                    }
+                }
+                if (!$silentMode) {
+                    echo $cf->getContent_Prev();
+                }
+                if ($pos > 0) {
+                    if (!$silentMode) {
+                        echo ')';
+                    }
+                }
+                $cf->getBorders( '(', ')', $pos);
+                if (!$silentMode) {
+                    echo '(' . @$cf->getContent();
+                }
+                if (!$silentMode) {
+                    echo ')(';
+                }
+                $cf->getBorders( '(', ')', $pos);
+                if (!$silentMode) {
+                    echo '' . $cf->getContent_Next();
+                }
+
+                if (!$silentMode) {
+                    echo '<br>';
+                }
+            }
+        }
+
+    }
+
+    if (1) {
+        ######## borders beetween #########
+        $cf->getBorders( '(1)', '(7)', 0);
+        $c = @$cf->getContent();
+        if (!$silentMode) {
+            echo __LINE__ . ': ' . $c . '<br>';
+            echo __LINE__ . ':$rebuild= <br>' . $rebuild . '<br>';
+            echo __LINE__ . ': BetweenID 0,2<br>=' . $cf->getContent_BetweenIDs(0, 2) . '<br>';
+            echo __LINE__ . ': BetweenID 1,3<br>=' . $cf->getContent_BetweenIDs(1, 3) . '<br>';
+            echo __LINE__ . ': BetweenID 2,4<br>=' . $cf->getContent_BetweenIDs(2, 4) . '<br>';
+            echo __LINE__ . ': BetweenID 0,4<br>=' . $cf->getContent_BetweenIDs(0, 4) . '<br>';
+            echo __LINE__ . ': BetweenNext2Current<br>=' . $cf->getContent_BetweenNext2Current() . '<br>';
+            echo __LINE__ . ': BetweenPrev2Current<br>=' . $cf->getContent_BetweenPrev2Current() . '<br>';
+            echo '<br>';
+        }
+        if ($rebuild != $source) {
+            die(__FUNCTION__ . __LINE__ . ': $rebuild != $source');
+        }
+        ######## borders beetween #########
+    }
+
+
+    return $rebuild;
+}
 
 
 function getContentOfFile_commandsTXT2shortInfoTXT($file_content, $arguments = null) {
@@ -137,7 +257,8 @@ function getContentOfFile_commandsTXT2shortInfoTXT($file_content, $arguments = n
 //    if($bugIt)echo __LINE__.':  :-) ' . "\n";
     preg_match('/"gameSpeed":(\d+).*"map":"([^"]+)"/', $contentBehind,$matchesMAPandSPEED);
     $gameSpeed = $matchesMAPandSPEED[1];
-    $map = substr( str_replace("/", "∕", $matchesMAPandSPEED[2]),5 ); # pseudo backslash with no problems as filename# maps/
+    $map = substr( str_replace("/", "∕", $matchesMAPandSPEED[2]),7 ); # pseudo backslash with no problems as filename# maps/
+//    die(__LINE__ . ": $map");
 
 //    var_dump($matches2);
 
@@ -195,7 +316,7 @@ function getContentOfFile_commandsTXT2shortInfoTXT($file_content, $arguments = n
         ];
 
         if($teamNrOld <> $teamNr) {
-            $playerNr = 0;
+//            $playerNr = 0;
             $returnStr .= ' VS ';
             $returnStr2 .= ' VS ';
             $returnStr3 .= ' VS ';
@@ -310,6 +431,7 @@ function sortArray2string(array $teamNrArr){
             if ($teamNrOld <> $teamIDhere) {
                 $playerNr = 0;
                 $r .= ' VS ';
+
             } else $r .= $delimiter;
             $r .= $player['rating'];
             $r .= $player['civ'];
@@ -319,5 +441,22 @@ function sortArray2string(array $teamNrArr){
     }
     $r = ltrim($r, $delimiter. " ");
     return $r;
+}
+
+// --name1="value1" --name2="value2"
+function arguments($argv) {
+    $_ARG = array();
+    foreach($argv as $arg) {
+        if(preg_match_all('/--([^=]+)="?([^"]*)"?/', $arg, $reg)) {
+            foreach($reg[1] as $k => $v) {
+                $var = $reg[2][$k];
+                $_ARG[$v] = $var;
+            }
+        }
+        elseif(preg_match_all('/-([^=]+)="?([^"]*)"?/', $arg, $reg)) {
+            $_ARG[$reg[1]] = 'true';
+        }
+    }
+    return $_ARG;
 }
 
