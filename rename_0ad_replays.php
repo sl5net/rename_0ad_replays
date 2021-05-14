@@ -24,8 +24,8 @@ $bugIt=true;
 #$bugIt=false;
 if($bugIt)echo __LINE__.':  :-) ' . "\n";
 
-$path0 = '/home/xyz/snap/0ad/206/.local/share/0ad/replays/0.0.24/2021-03-15_0001 Alistair (1432 kush) vs seeh (926 maur) in maps skirmishes alpine_valleys_2p/';
-$path0 = '/home/xyz/snap/0ad/206/.local/share/0ad/replays/0.0.24/';
+$path0 = '/home/x/snap/0ad/206/.local/share/0ad/replays/0.0.24/2021-03-15_0001 Alistair (1432 kush) vs seeh (926 maur) in maps skirmishes alpine_valleys_2p/';
+$path0 = '/home/x/snap/0ad/206/.local/share/0ad/replays/0.0.24/';
 
 //$dirs = array_filter(glob('*'), 'is_dir');
 //$sub_directories = array_map('basename', glob($directory_path . '/*', GLOB_ONLYDIR));
@@ -80,7 +80,7 @@ function workThisFolder($path0, string $folderName, $bugIt): void
         die(__LINE__ . "':  \$path0) = " . $path0 . "\n");
     if(!$fileAddress)
         die(__LINE__ . "':  \$fileAddress) = " . $fileAddress . "\n");
-    echo __LINE__ . "':  \$fileAddress) = " . $fileAddress . "\n";
+//    echo "\n\n". __LINE__ . "':  \$fileAddress) = \n" . $fileAddress . "\n";
 
 //$fileAddress = './commands.txt';
 
@@ -92,16 +92,29 @@ function workThisFolder($path0, string $folderName, $bugIt): void
         return;
     }
     $actual_contentArray = getContentOfFile_commandsTXT2shortInfoTXT($file_content);
+
+//    var_dump($actual_contentArray);
+
+    if(false && strlen($actual_contentArray['infoContent']) > 20) {
+        echo "\n\n infoContent= \n\n";
+        echo $actual_contentArray['infoContent'];
+        echo "\n"; # $sortedStringBestRatingFirst['infoContent']
+//    if(isset($actual_contentArray['infoContent']))
+//        var_dump($actual_contentArray['infoContent']);
+        die("\n die in " . __LINE__ . "\n");
+    }
+
     $newFileName = "" . $actual_contentArray['sortedString'] . " IN " . $actual_contentArray['map'] . ", " . $actual_contentArray['gameSpeed'] . " speed";
-    echo $newFileName;
+//    echo $newFileName;
     $infoTXTpath = $path . '/info.txt';
-    file_put_contents($infoTXTpath, $newFileName . " $folderName"); // Write data to a file
+    file_put_contents($infoTXTpath, $actual_contentArray['infoContent']); // Write data to a file
     // Renames the directory
+
 //    die(__LINE__ . ": rename($path, $newFileName);" );
     $folderPathNew = $path0 . '/' . $newFileName; # . ' ' . $folderName;
 
 
-    rename($path, $folderPathNew);
+//    rename($path, $folderPathNew);
 
 
     if(!is_dir($folderPathNew)){
@@ -109,8 +122,10 @@ function workThisFolder($path0, string $folderName, $bugIt): void
     }
 
 //    die("\ndie at " . __LINE__);
-    if($bugIt)echo "\n" . __LINE__ . "  :-) result written to fileAddress='\n" . $infoTXTpath . "'\n";
-    if($bugIt)echo "\n" . __LINE__ . "  :-) renamed to='\n" . $folderPathNew . "'\n";
+//    if($bugIt)echo "\n" . __LINE__ . "  :-) result written to fileAddress='\n" . $infoTXTpath . "'\n";
+    if($bugIt && strlen($folderName)>100) {
+        echo "\n\n" . __LINE__ . "  :-) renamed to='\n\n.../" . $newFileName . "'\n\n";
+    }
 }
 
 //workThisFolder($path0, $folderName, $bugIt, $fileAddress_result1);
@@ -256,8 +271,8 @@ function getContentOfFile_commandsTXT2shortInfoTXT($file_content, $arguments = n
     //    "gameSpeed":1,"mapType":"random","map":"maps/random/mainland"
 //    if($bugIt)echo __LINE__.':  :-) ' . "\n";
     preg_match('/"gameSpeed":(\d+).*"map":"([^"]+)"/', $contentBehind,$matchesMAPandSPEED);
-    $gameSpeed = $matchesMAPandSPEED[1];
-    $map = substr( str_replace("/", "∕", $matchesMAPandSPEED[2]),7 ); # pseudo backslash with no problems as filename# maps/
+    $gameSpeed = @$matchesMAPandSPEED[1];
+    $map = substr( str_replace("/", "∕", @$matchesMAPandSPEED[2]),7 ); # pseudo backslash with no problems as filename# maps/
 //    die(__LINE__ . ": $map");
 
 //    var_dump($matches2);
@@ -316,7 +331,7 @@ function getContentOfFile_commandsTXT2shortInfoTXT($file_content, $arguments = n
         ];
 
         if($teamNrOld <> $teamNr) {
-//            $playerNr = 0;
+//            $teamNrOld = $playerNr = 0;
             $returnStr .= ' VS ';
             $returnStr2 .= ' VS ';
             $returnStr3 .= ' VS ';
@@ -335,9 +350,10 @@ function getContentOfFile_commandsTXT2shortInfoTXT($file_content, $arguments = n
 
         $echo = "($name $rating$civ)";
         if($teamNrOld == $teamNr) {
+//            $playerNr=0;
             $echo2 = '|';
             $echo3 = '#';
-            $echo4 = '+';
+            $echo4 = ', ';
             $echo5 = ',';
         }else{
             $echo2 = '';
@@ -347,14 +363,14 @@ function getContentOfFile_commandsTXT2shortInfoTXT($file_content, $arguments = n
         }
         $echo2 .= "$name $rating$civ";
         $echo3 .= "$name $rating$civ";
-        $echo4 .= "$name $rating$civ";
+        $echo4 .= "$name(". ltrim($rating . $civ) . ")";
         $echo5 .= "$name$rating$civ";
         $returnStr .= $echo;
         $returnStr2 .= $echo2;
         $returnStr3 .= $echo3;
         $returnStr4 .= $echo4;
         $returnStr5 .= $echo5;
-//        $teamNrOld = $teamNr;
+        $teamNrOld = $teamNr; # if not set infoText gets to many VS
 //        if($bugIt)echo __LINE__.":  :-) $teamNrOld = $teamNr; \n";
 
         $playerNr++;
@@ -362,7 +378,7 @@ function getContentOfFile_commandsTXT2shortInfoTXT($file_content, $arguments = n
     }
 
     foreach ($teamNrArr as $index => $team) {
-        if($teamNrArr[0][0]["rating"] < $team[0]["rating"]) {
+        if(@$teamNrArr[0][0]["rating"] < @$team[0]["rating"]) {
             # change the teams
             $t0old = $teamNrArr[0];
             $teamNrArr[0] = $team;
@@ -374,20 +390,21 @@ function getContentOfFile_commandsTXT2shortInfoTXT($file_content, $arguments = n
     $sortedStringBestRatingFirst = sortArray2string($teamNrArr);
 //    echo "\n\n sortedStringBestRatingFirst = " . $sortedStringBestRatingFirst . "\n\n";
 
-    return array('sortedString'=>$sortedStringBestRatingFirst,'gameSpeed'=>$gameSpeed,'map'=>$map,'unSortedArray'=>$teamNrArr);
+        $infoContent = ltrim($returnStr)
+        . "\n" . ltrim($returnStr2,"| ")
+        . "\n" . ltrim($returnStr3,"# ")
+        . "\n" . ltrim($returnStr4,", ")
+        . "\n" . ltrim($returnStr5,", ")
+        . "\n" . $sortedStringBestRatingFirst
+        . '';
+
+    return array('sortedString'=>$sortedStringBestRatingFirst,'gameSpeed'=>$gameSpeed,'map'=>$map,'unSortedArray'=>$teamNrArr, 'infoContent'=>$infoContent);
 
 //    if($bugIt)echo __LINE__.':  :-) ' . var_export($teamNrArr) . "\n";
 
 //    var_dump($teamNrArr);
 #    echo implode(',',$teamNrArr);
 
-//    return ltrim($returnStr)
-//        . "\n" . ltrim($returnStr2,"| ")
-//        . "\n" . ltrim($returnStr3,"# ")
-//        . "\n" . ltrim($returnStr4,"+ ")
-//        . "\n" . ltrim($returnStr5,", ")
-//        . "\n" . $sortedStringBestRatingFirst
-//        . '';
 
 
 }
@@ -404,7 +421,7 @@ function getContentBehind($matches, $file_content, $maxLength=100){
     $last2ArrayValue = $last1ArrayValue[array_key_last($last1ArrayValue)];
     $lastKey = array_key_last($last2ArrayValue);
     $lastPos = $last2ArrayValue[$lastKey];
-    $posBehindLastSearch = $lastPos + $last1ArrayValue[array_key_last($last1ArrayValue) - 1][$lastKey - 1];
+    $posBehindLastSearch = $lastPos + @$last1ArrayValue[array_key_last($last1ArrayValue) - 1][$lastKey - 1];
 //    echo "\n\n\n" . $lastPos . "\n\n\n";
 //    echo "\n\n\n" . $posBehindLastSearch . "\n\n\n";
     $contentBehind = substr($file_content, $posBehindLastSearch, $maxLength);
@@ -420,7 +437,7 @@ function sortArray2string(array $teamNrArr){
     $r = '';
     $teamNrOld = 0;
 
-    $countOfTeam1 = count($teamNrArr[1]);
+    $countOfTeam1 = @count($teamNrArr[1]);
     if($countOfTeam1 >2) {
         $delimiter = trim($delimiter); # . $countOfTeam1;
     }
