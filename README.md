@@ -17,7 +17,7 @@ uncoment
 
 if you want.
 
-## run php script example:
+## run php script example in your bash/console/terminal:
 
  clear ; php ~/php/SL5_preg_contentFinder-master/examples/0ad-replay/commands_txt2output_txt.php
 
