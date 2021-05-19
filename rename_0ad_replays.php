@@ -9,7 +9,7 @@
  * https://github.com/paulmillr/chokidar
  *
  *
- * clear ; php ~/php/SL5_preg_contentFinder-master/examples/0ad-replay/commands_txt2output_txt.php
+ clear ; php ~/php/SL5_preg_contentFinder-master/examples/0ad-replay/commands_txt2output_txt.php
  * writes info.txt
  * script reads --source1=./commands.txt
  * script write --result1=./result.txt
