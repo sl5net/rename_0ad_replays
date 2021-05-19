@@ -21,3 +21,11 @@ if you want.
 
  clear ; php ~/php/commands_txt2output_txt.php
 
+
+## exemple result:
+
+1849maurRauls, 988persBobert VS 1408maurDamianos, 926romeSeeh IN random∕lake, 1 speed
+
+folder name before:
+
+202020-12-19_0001
