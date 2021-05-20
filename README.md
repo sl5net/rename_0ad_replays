@@ -48,12 +48,20 @@ needs nodejs. example install for ubuntu v20.4
 ```
 /*
 node ~/snap/0ad/206/.local/share/0ad/replays/0.0.24/file-watcher.js
+
+dont look for comands.txt is genarated when game started to record.
+commands.txt size grows during the game. if its not there. 
+
+look better for metadata.json . this is only exist if game is finiesed
+
+
+
 */
 const { exec } = require("child_process");
 
 var chokidar = require('chokidar');
 //var watcher = chokidar.watch('file or dir', {ignored: /^\./, persistent: true});
-var watcher = chokidar.watch('/home/x/snap/0ad/206/.local/share/0ad/replays/0.0.24/*/commands.txt',{ignored: /$^/, persistent: true}); // “match nothing”
+var watcher = chokidar.watch('/home/x/snap/0ad/206/.local/share/0ad/replays/0.0.24/*/metadata.json',{ignored: /$^/, persistent: true}); // “match nothing”
 // {ignored: /^[^\.].*$/, persistent: true}
 // https://regex101.com/r/XnKYcf/1
 watcher
@@ -63,8 +71,8 @@ watcher
         console.log('File', path, 'new game add found :) ');
       }
       
-//  * clear ; php ~/php/0ad-replay/commands_txt2output_txt.php
-    var cmd = 'php /home/x/php/commands_txt2output_txt.php';
+//  * clear ; php ~/php/SL5_preg_contentFinder-master/examples/0ad-replay/commands_txt2output_txt.php
+    var cmd = 'php /home/x/php/SL5_preg_contentFinder-master/examples/0ad-replay/commands_txt2output_txt.php';
     exec(cmd, (error, stdout, stderr) => {
     if (error) {
         // console.log(`error: ${error.message}`); // ==> its works here but sends error-messages
@@ -87,4 +95,13 @@ watcher
   .on('unlink', function(path) {console.log('File', path, 'has been removed  :-O ');})
   .on('error', function(error) {console.error('Error happened', error);})
   
+  
+/*  
+\b(?:(?!a)\w)+\b
+# word boundary, neg. lookahead, disallowing "a",
+# afterwards match as many word characters as possible
+# in the end another word boundary  
+  
+; 
+*/
 ```
