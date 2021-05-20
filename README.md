@@ -36,6 +36,6 @@ crontab -e
 
 */1 * * * * /home/x/php/commands_txt2output_txt.php 
 
-recomandet !!!! uncoment into the source:
+recommended !!!! uncoment into the source:
 
 $doRenameAll = false; # rename only new folder (means new games without good name)
