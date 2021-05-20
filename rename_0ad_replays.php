@@ -26,8 +26,8 @@ $bugIt = true;
 #$bugIt=false;
 if ($bugIt) echo __LINE__ . ':  :-) ' . "\n";
 
-$path0 = '/home/ /snap/0ad/206/.local/share/0ad/replays/0.0.24/2021-03-15_0001 Alistair (1432 kush) vs seeh (926 maur) in maps skirmishes alpine_valleys_2p/';
-$path0 = '/home/ /snap/0ad/206/.local/share/0ad/replays/0.0.24/';
+$path0 = '/home/x/snap/0ad/206/.local/share/0ad/replays/0.0.24/2021-03-15_0001 Alistair (1432 kush) vs seeh (926 maur) in maps skirmishes alpine_valleys_2p/';
+$path0 = '/home/x/snap/0ad/206/.local/share/0ad/replays/0.0.24/';
 
 //$dirs = array_filter(glob('*'), 'is_dir');
 //$sub_directories = array_map('basename', glob($directory_path . '/*', GLOB_ONLYDIR));
@@ -77,12 +77,20 @@ $folderName = '2021-05-10_0002';
 function workThisFolder($path0, string $folderName, $bugIt): void
 {
     $path = $path0 . "/" . $folderName;
+    $fileAddress_metadata = $path . '/metadata.json';
+    if (!file_exists($fileAddress_metadata)) { // /$fileAddress_metadata is build when game is finished. if its not there. it doesn't make since.
+        return;
+    }
     $fileAddress = $path . '/commands.txt';
 
     if (!$path0)
         die(__LINE__ . "':  \$path0) = " . $path0 . "\n");
     if (!$fileAddress)
         die(__LINE__ . "':  \$fileAddress) = " . $fileAddress . "\n");
+    if (!file_exists($fileAddress)) { // /commands.txt is build during the game. if its not there. it doesn't make since.
+        # echo __LINE__ . "': NO FILE  !file_exists($fileAddress)) = \n";
+        return;
+    }
 //    echo "\n\n". __LINE__ . "':  \$fileAddress) = \n" . $fileAddress . "\n";
 
 //$fileAddress = './commands.txt';
