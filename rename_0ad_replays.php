@@ -9,7 +9,7 @@
  * https://github.com/paulmillr/chokidar
  *
  *
- clear ; php ~/php/SL5_preg_contentFinder-master/examples/0ad-replay/commands_txt2output_txt.php
+ * clear ; php ~/php/SL5_preg_contentFinder-master/examples/0ad-replay/commands_txt2output_txt.php
  * writes info.txt
  * script reads --source1=./commands.txt
  * script write --result1=./result.txt
@@ -20,21 +20,21 @@
  *
  * attributes source1, result1 are not optional.
 */
-$tipLinuxCommandForPrintFoldersSorted = 'ls -d */ > ./ls-sort.txt';
-
+$tipLinuxCommandForPrintFoldersSorted1 = 'ls -d */ > ./ls-sort.txt';
+$tipLinuxCommandForPrintFoldersSorted2 = 'ls -d -- *Seeh* > ./ls-sort-Seeh-isPlayint.txt';
 $bugIt = true;
 #$bugIt=false;
 if ($bugIt) echo __LINE__ . ':  :-) ' . "\n";
 
-$path0 = '/home/x/snap/0ad/206/.local/share/0ad/replays/0.0.24/2021-03-15_0001 Alistair (1432 kush) vs seeh (926 maur) in maps skirmishes alpine_valleys_2p/';
-$path0 = '/home/x/snap/0ad/206/.local/share/0ad/replays/0.0.24/';
+$path0 = '/home/ /snap/0ad/206/.local/share/0ad/replays/0.0.24/2021-03-15_0001 Alistair (1432 kush) vs seeh (926 maur) in maps skirmishes alpine_valleys_2p/';
+$path0 = '/home/ /snap/0ad/206/.local/share/0ad/replays/0.0.24/';
 
 //$dirs = array_filter(glob('*'), 'is_dir');
 //$sub_directories = array_map('basename', glob($directory_path . '/*', GLOB_ONLYDIR));
 
 //$bugIt=false;
 
-//$doRenameAll = true;
+// $doRenameAll = true;
 $doRenameAll = false; # rename only new folder (means new games without good name)
 if ($doRenameAll) { # rescan rename all but not folders with leading YT
     $files = scandir($path0);
@@ -106,7 +106,12 @@ function workThisFolder($path0, string $folderName, $bugIt): void
         die("\n die in " . __LINE__ . "\n");
     }
 
-    $newFileName = "" . $actual_contentArray['sortedString'] . " IN " . $actual_contentArray['map'] . ", " . $actual_contentArray['gameSpeed'] . " speed";
+    $temp = $actual_contentArray['sortedString'];
+    if(substr($temp,0,1) == 9) {
+        $temp = "0" . $temp;
+//        die("\n\n" . __LINE__ . ": \n" . $temp );
+    }
+    $newFileName = "" . $temp . " IN " . $actual_contentArray['map'] . ", " . $actual_contentArray['gameSpeed'] . " speed";
 //    echo $newFileName;
     $infoTXTpath = $path . '/info.txt';
     file_put_contents($infoTXTpath, $actual_contentArray['infoContent']); // Write data to a file
@@ -115,7 +120,8 @@ function workThisFolder($path0, string $folderName, $bugIt): void
 //    die(__LINE__ . ": rename($path, $newFileName);" );
     $folderPathNew = $path0 . '/' . $newFileName; # . ' ' . $folderName;
 
-    rename($path, $folderPathNew);
+    if(!is_dir($folderPathNew))
+        rename($path, $folderPathNew);
 
     if (!is_dir($folderPathNew)) {
         die(__LINE__ . "\n\n\n not renamed: \n$path\n\n not exist: \n\n" . $folderPathNew . "\n");
@@ -280,8 +286,9 @@ function getContentOfFile_commandsTXT2shortInfoTXT($file_content, $arguments = n
 //    var_dump($matches2);
 
     # TODO: not performant solution. but works.
+    # "Name":"Shatadhanvan Maurya","Civ":"maur"
     # now very quick and dirty solution. historically. not good for performance do the match to times. maybe there is no caching
-    preg_match_all('/Name":"([^"(]+)(?:\((\d*)\))?([^"]*)","Civ":"([^"]+)",.*?"Team":(-?\d+)/'
+    preg_match_all('/Name":"([^"(]+)\s*?(?:\((\d*)\))?([^"]*)","Civ":"([^"]+)",.*?"Team":(-?\d+)/'
         , $file_content
         , $matchesOFFSET
         , PREG_SET_ORDER
@@ -435,7 +442,7 @@ function getContentBehind($matches, $file_content, $maxLength = 100)
 {
 //    var_dump($matches);
     $last1ArrayValue = $matches[array_key_last($matches)];
-    $last2ArrayValue = $last1ArrayValue[array_key_last($last1ArrayValue)];
+    $last2ArrayValue = @$last1ArrayValue[array_key_last($last1ArrayValue)];
     $lastKey = array_key_last($last2ArrayValue);
     $lastPos = $last2ArrayValue[$lastKey];
     $posBehindLastSearch = $lastPos + @$last1ArrayValue[array_key_last($last1ArrayValue) - 1][$lastKey - 1];
@@ -495,4 +502,3 @@ function arguments($argv)
     return $_ARG;
 }
 
-    
