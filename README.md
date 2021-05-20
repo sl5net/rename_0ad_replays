@@ -29,3 +29,9 @@ if you want.
 folder name before:
 
 202020-12-19_0001
+
+## run it every minute
+
+crontab -e
+
+*/1 * * * * /home/x/php/commands_txt2output_txt.php 
