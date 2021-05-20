@@ -41,6 +41,9 @@ recommended !!!! uncoment into the source:
 $doRenameAll = false; # rename only new folder (means new games without good name)
 
 ## run it using JavaScript FileWatcher:
+needs nodejs. example install for ubuntu v20.4
+
+>sudo apt install nodejs
 
 ```
 /*
