@@ -7,6 +7,16 @@ for example:
 
 ~/snap/0ad/206/.local/share/0ad/replays/0.0.24
 
+rename in script 
+
+0ad/239
+
+to your version
+
+for example
+
+0ad/242
+
 ## example install php-cli
 
 sudo apt -y install php7.4-cli
