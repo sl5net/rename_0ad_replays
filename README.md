@@ -1,6 +1,12 @@
 # rename_0ad_replays.php
 this renames the replay folder names
 
+## save it in already existing replays folder
+
+for example:
+
+~/snap/0ad/206/.local/share/0ad/replays/0.0.24
+
 ## example install php-cli
 
 sudo apt -y install php7.4-cli
@@ -9,7 +15,7 @@ sudo apt -y install php7.4-cli
 
 search for and change this:
 
-$path0 = '/home/x/snap/0ad/206/.local/share/0ad/replays/0.0.24/';
+$path0 = '/home/x/snap/0ad/206/.local/share/0ad/replays/0.0.242/';
 
 uncoment 
 
@@ -47,7 +53,7 @@ needs nodejs. example install for ubuntu v20.4
 
 ```
 /*
-node ~/snap/0ad/206/.local/share/0ad/replays/0.0.24/file-watcher.js
+node ~/snap/0ad/206/.local/share/0ad/replays/0.0.242/file-watcher.js
 
 dont look for comands.txt is genarated when game started to record.
 commands.txt size grows during the game. if its not there. 
@@ -61,7 +67,7 @@ const { exec } = require("child_process");
 
 var chokidar = require('chokidar');
 //var watcher = chokidar.watch('file or dir', {ignored: /^\./, persistent: true});
-var watcher = chokidar.watch('/home/x/snap/0ad/206/.local/share/0ad/replays/0.0.24/*/metadata.json',{ignored: /$^/, persistent: true}); // “match nothing”
+var watcher = chokidar.watch('/home/x/snap/0ad/206/.local/share/0ad/replays/0.0.242/*/metadata.json',{ignored: /$^/, persistent: true}); // “match nothing”
 // {ignored: /^[^\.].*$/, persistent: true}
 // https://regex101.com/r/XnKYcf/1
 watcher
