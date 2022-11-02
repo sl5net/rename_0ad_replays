@@ -1,4 +1,4 @@
-# rename_0ad_replays.php
+# rename_0ad_replays
 this renames the replay folder names
 
 ## save it in already existing replays folder
