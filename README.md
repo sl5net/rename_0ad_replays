@@ -17,10 +17,6 @@ for example
 
 0ad/242
 
-## example install php-cli
-
-sudo apt -y install php7.4-cli
-
 ## setpath0
 
 search for and change this:
@@ -32,11 +28,6 @@ uncoment
 //$doRenameAll = true;
 
 if you want.
-
-## run php script example in your bash/console/terminal:
-
- clear ; php ~/php/commands_txt2output_txt.php
-
 
 ## exemple result:
 
