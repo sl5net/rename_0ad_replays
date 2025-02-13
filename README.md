@@ -30,7 +30,8 @@ This should print the Kotlin version.
 
 compile example(you dont need to to it later again):
 ```bash
-~/.local/share/0ad/replays/0.27.0$ clear; kotlinc rename_0ad_replays_a27.kt -include-runtime -d rename_0ad_replays_a27.jar
+cd ~/.local/share/0ad/replays/0.27.0
+clear; kotlinc rename_0ad_replays_a27.kt -include-runtime -d rename_0ad_replays_a27.jar
 ```
 
 run example:
