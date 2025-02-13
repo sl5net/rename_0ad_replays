@@ -36,88 +36,12 @@ SDKMAN! is a version manager that simplifies installing and managing SDKs (inclu
 
 **3.  Configure the Script (Important):**
 
-*   **Navigate to your 0 A.D. replay directory.** The default location varies depending on your operating system and installation method. Here are some common locations:
-
-    *   **Linux (Snap):** `~/snap/0ad/<version>/.local/share/0ad/replays/0.27.0` (Replace `<version>` with the specific Snap version number, e.g., `201`, `242`, etc.)
-    *   **Linux (Standard):** `~/.local/share/0ad/replays/0.27.0`
-    *   **Windows:** `C:\Users\<YourUsername>\Documents\My Games\0 A.D. Public Alpha\replays\0.27.0`
-*   **Move** the `rename_0ad_replays.kt` file into the replay directory.
-*   **Edit the script to work in your folder** Change the $d0 to "."
+*   **Navigate to your 0 A.D. replay directory.** The default location varies depending on your operating system and installation method. Here are some common 
 
 **4. Compile the script**
 
 *To run the script, we navigate to the file first. Then compile the code with the command*
-````Bash
+```Bash
 cd ~/.local/share/0ad/replays/0.27.0
 clear; kotlinc rename_0ad_replays_a27.kt -include-runtime -d rename_0ad_replays_a27.jar
-content_copy
-download
-Use code with caution.
-Markdown
-
-5. Executing the jar
-You are now prepared to run it with java and call the jar
-
-java -jar rename_0ad_replays_a27.jar
-content_copy
-download
-Use code with caution.
-Bash
-Advanced Configuration
-
-isDemoMode: Set this variable to true for a dry run (no actual renaming) or false to enable renaming.
-
-d0 (Replay Directory): The script now automatically detects and is run in the current directory.
-
-walkDirectory the core function for iterating across the directory, must be made valid by:
-
-Correct regex statements. Regex statements are highly delicate, make sure they are proper, including: ""mapType"":""(?<mapType>[^"]*?)"".""mapName"":""(?<mapName>[^"]*?)"" "" - where all square brackets are removed are confirmed.
-
-Troubleshooting
-
-"Target file already exists": If the script encounters a directory with the same name as the new name, it will print this message and skip the renaming. This prevents data loss. You may want to manually delete the target file and rerun.
-
-"Directory doesn't exist": If you face an error that says can't locate file, then the directory is not correct.
-
-"Could not find or load main class": If you get this error you need to recheck every step, but its more than likeley that you need to add -classpath gson-2.10.1.jar. The other thing you can do is to make sure you added -include-runtime to the kotlinc call.
-
-Advanced usage
-
-The user, after getting all this to function properly.
-Is also interested in a kscript. If that is a future need, here are the steps
-
-kscript is a tool specifically designed to make Kotlin scripting easier:
-
-Install kscript: (Follow the instructions on their GitHub page: https://github.com/holgerbrandl/kscript)
-
-It typically involves downloading a script and running it:
-
-curl -s "https://get.kscript.org" | bash -s
-content_copy
-download
-Use code with caution.
-Bash
-
-Run Your Script with kscript:
-
-kscript rename_0ad_replays.kt
-content_copy
-download
-Use code with caution.
-Bash
-
-Disclaimer: I will not help set up kscript as that is for future use. This is outside my capacity.
-
-Important Considerations:
-
-User Configuration: This guide assumes basic familiarity with using the command line and setting environment variables. If you're new to these concepts, you might need to consult additional resources.
-
-That completes the setup for your readme file, but I would like to restate the key points and assumptions for this task.
-
-The user has verified that java works
-
-The user has verified that kotlin version has proper version.
-
-If errors are being thrown after proper setup. You need to reset the system.
-
-I wish you good luck in setting it up, feel free to respond with any further question or modifications if you are having difficulties.
+```
