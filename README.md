@@ -7,22 +7,22 @@ You need a Kotlin compiler and runtime environment (JRE) installed. The easiest 
 
  SDKMAN! is a version manager that makes installing and managing SDKs (including Kotlin) very easy on Linux, macOS, and similar systems.
 
-    *   **Install SDKMAN!** (If you don't already have it)
-        ```bash
-        curl -s "https://get.sdkman.io" | bash
-        source "$HOME/.sdkman/bin/sdkman-init.sh"  # Or follow the instructions printed by the installer
-        ```
+*   **Install SDKMAN!** (If you don't already have it)
+```bash
+curl -s "https://get.sdkman.io" | bash
+source "$HOME/.sdkman/bin/sdkman-init.sh"  # Or follow the instructions printed by the installer
+```
 
-    *   **Install Kotlin:**
-        ```bash
-        sdk install kotlin
-        ```
+*   **Install Kotlin:**
+```bash
+sdk install kotlin
+```
 
-    *   **Verify Installation:**
-        ```bash
-        kotlin -version
-        ```
-        This should print the Kotlin version.
+*   **Verify Installation:**
+```bash
+kotlin -version
+```
+This should print the Kotlin version.
 
 ## save it in already existing replays folder
 
