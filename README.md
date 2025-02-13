@@ -22,6 +22,11 @@ sdk install kotlin
 ```bash
 kotlin -version
 ```
+
+```bash
+kotlinc ...
+```
+
 This should print the Kotlin version.
 
 ## save it in already existing replays folder
