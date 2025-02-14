@@ -40,8 +40,13 @@ SDKMAN! is a version manager that simplifies installing and managing SDKs (inclu
 
 **4. Compile the script**
 
-*To run the script, we navigate to the file first. Then compile the code with the command*
+*navigate to the file first. Then compile the code (dont need to do it later again)
 ```Bash
 cd ~/.local/share/0ad/replays/0.27.0
 clear; kotlinc rename_0ad_replays_a27.kt -include-runtime -d rename_0ad_replays_a27.jar
+```
+
+*To run the script
+```Bash
+java -jar rename_0ad_replays.jar
 ```
